@@ -2,6 +2,7 @@
  * CS 235 Fall 2016 Midterm
  */
 #include "RedRover.h"
+#include <sstream>
 
 RedRover::~RedRover(){}
 RedRover::RedRover(){}
@@ -29,6 +30,12 @@ RedRover::RedRover(){}
 * Returns true if players were added to the roster, false otherwise
 */
 bool RedRover::addToRoster(string player_list) {
+    string name;
+    int strength, speed;
+    stringstream ss;
+    ss >> name;
+    ss >> strength;
+    ss >> speed;
     return false;
 }
 
@@ -38,7 +45,7 @@ bool RedRover::addToRoster(string player_list) {
 * Returns the number of players in the roster.
 */
 int RedRover::getRosterSize() {
-    return NULL;
+    return 1;
 }
 
 /*
@@ -47,7 +54,7 @@ int RedRover::getRosterSize() {
 * Returns the number of players on Team A.
 */
 int RedRover::getTeamASize() {
-    return NULL;
+    return 1;
 }
 
 /*
@@ -56,7 +63,7 @@ int RedRover::getTeamASize() {
 * Returns the number of players on Team B.
 */
 int RedRover::getTeamBSize() {
-    return NULL;
+    return 1;
 }
 
 /*

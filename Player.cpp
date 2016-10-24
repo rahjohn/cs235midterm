@@ -21,7 +21,7 @@ string Player::getName(){
 *returns the strength of the player
 */
 int Player::getStrength() {
-    return NULL;
+    return 1;
 }
 
 /*
@@ -30,5 +30,5 @@ int Player::getStrength() {
 *returns the speed of the player
 */
 int Player::getSpeed() {
-    return NULL;
+    return 1;
 }
