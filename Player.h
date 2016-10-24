@@ -1,8 +1,8 @@
 /* Rachel Johnson
  * CS 235 Fall 2016 Midterm
  */
-#ifndef doubleLinkedList_h
-#define doubleLinkedList_h
+#ifndef PLAYER_H
+#define PLAYER_H
 #include "PlayerInterface.h"
 
 class Player : public PlayerInterface {

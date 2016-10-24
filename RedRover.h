@@ -1,8 +1,8 @@
 /* Rachel Johnson
  * CS 235 Fall 2016 Midterm
  */
-#ifndef doubleLinkedList_h
-#define doubleLinkedList_h
+#ifndef REDROVER_H
+#define REDROVER_H
 #include "RedRoverInterface.h"
 
 class RedRover : public RedRoverInterface {
