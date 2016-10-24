@@ -1,4 +1,4 @@
-#include "linkedlist.h"
+#include "doubleLinkedList.h"
 
 #ifndef DATASTRUCTURE_H
 #define DATASTRUCTURE_H
@@ -17,7 +17,7 @@ public:
     virtual int size() = 0;
     virtual bool valueExists(int i) = 0;
 private:
-    LinkedList<int> cars;
+    doubleLinkedList<int> players;
     int MAX = 5;
 };
 #endif

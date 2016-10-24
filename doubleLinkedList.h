@@ -1,8 +1,5 @@
-/* Rachel Johnson
- * CS 235 Fall 2016 Midterm
- */
-#ifndef LINKEDLIST_H
-#define LINKEDLIST_H
+#ifndef DOUBLELINKEDLIST_H
+#define DOUBLELINKEDLIST_H
 #include <iostream>
 #include <string>
 #include <stdexcept>
@@ -10,10 +7,11 @@
 using namespace std;
 
 
-template<class T> class LinkedList {
+template<class T> class doubleLinkedList {
 private:
     struct Node { //creating nodes for the linked list
         T data;
+        T value;
         Node * next;
         Node(T data) : data(data) {
             this -> next = NULL;
@@ -22,6 +20,38 @@ private:
         virtual ~Node(){};
     };
     Node * head = NULL;
+    Node * curr;
+public:
+
+    doubleLinkedList() {
+        head = NULL;
+    };
+    virtual ~doubleLinkedList() {
+        clear();
+    };
+    /*
+           insertHead
+
+           A node with the given value should be inserted at the beginning of the list.
+
+           Do not allow duplicate values in the list.
+    */
+
+    bool valueIsInList(T value) {
+        if (this->size() > 0) {
+            if (head->value == value) {
+                return true;
+            }
+            curr = head;
+            while (curr->next != NULL) {
+                curr = curr->next;
+                if (curr->value == value) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     bool valid(T value) {
         bool valid = true;
         Node * temp = head;
@@ -32,8 +62,7 @@ private:
             temp = temp -> next;
         }
         temp = NULL;
-        return valid;
-
+        return (!valueIsInList(value) && valid) ;
     }
     bool empty(T value) {
         if (head ==NULL) {
@@ -43,21 +72,6 @@ private:
             return false;
         }
     }
-public:
-
-    LinkedList() {
-        head = NULL;
-    };
-    virtual ~LinkedList() {
-        clear();
-    };
-    /*
-           insertHead
-
-           A node with the given value should be inserted at the beginning of the list.
-
-           Do not allow duplicate values in the list.
-    */
     virtual void insertHead(T value) {
         if (empty(value)) {
             return;

@@ -4,8 +4,12 @@
 #include "RedRover.h"
 #include <sstream>
 
-RedRover::~RedRover(){}
-RedRover::RedRover(){}
+RedRover::RedRover(){
+    players = new doubleLinkedList<string>();
+}
+RedRover::~RedRover(){
+    players->clear();
+}
 
 /*
 * addToRoster()
@@ -30,13 +34,12 @@ RedRover::RedRover(){}
 * Returns true if players were added to the roster, false otherwise
 */
 bool RedRover::addToRoster(string player_list) {
-    string name;
-    int strength, speed;
-    stringstream ss;
+    string name, strength, speed;
+    stringstream ss(player_list);
     ss >> name;
     ss >> strength;
     ss >> speed;
-    return false;
+    players->insertHead(name);
 }
 
 /*
@@ -45,7 +48,7 @@ bool RedRover::addToRoster(string player_list) {
 * Returns the number of players in the roster.
 */
 int RedRover::getRosterSize() {
-    return 1;
+    return players->size();
 }
 
 /*
@@ -79,7 +82,7 @@ int RedRover::getTeamBSize() {
 * Returns the string representation of the roster
 */
 string RedRover::getRoster() {
-    return NULL;
+    return players->at(1);
 }
 
 /*

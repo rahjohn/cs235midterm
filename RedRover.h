@@ -4,6 +4,7 @@
 #ifndef REDROVER_H
 #define REDROVER_H
 #include "RedRoverInterface.h"
+#include "DataStructure.h"
 
 class RedRover : public RedRoverInterface {
 public:
@@ -25,6 +26,8 @@ public:
     virtual void teamReset();
     virtual void rosterReset();
     virtual void autoPlay();
+private:
+    doubleLinkedList<string> * players;
 };
 
 #endif
