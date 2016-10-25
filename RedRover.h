@@ -3,6 +3,7 @@
  */
 #ifndef REDROVER_H
 #define REDROVER_H
+#include "Player.h"
 #include "RedRoverInterface.h"
 #include "doubleLinkedList.h"
 
@@ -27,14 +28,9 @@ public:
     virtual void rosterReset();
     virtual void autoPlay();
 private:
-    struct playerStruct {
-        string name;
-        string strength;
-        string speed;
-    } player;
-    doubleLinkedList<playerStruct> * roster;
-    doubleLinkedList<playerStruct> * teamA;
-    doubleLinkedList<playerStruct> * teamB;
+    doubleLinkedList<Player> * roster;
+    doubleLinkedList<Player> * teamA;
+    doubleLinkedList<Player> * teamB;
 };
 
 #endif

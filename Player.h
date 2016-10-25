@@ -8,11 +8,16 @@
 
 class Player : public PlayerInterface {
 public:
-    Player();
+    Player(string name, string strength, string speed);
     virtual ~Player();
     virtual string getName();
     virtual int getStrength();
     virtual int getSpeed();
+private:
+    string name;
+    int strength;
+    int speed;
 };
+
 
 #endif

@@ -3,8 +3,16 @@
  */
 #include "Player.h"
 #include "doubleLinkedList.h"
+#include <sstream>
 
-Player::Player(){}
+Player::Player(string name, string speed, string strength){
+    this->name = name;
+    stringstream ss;
+    ss << speed;
+    ss >> this->speed;
+    ss << strength;
+    ss >> this->strength;
+}
 Player::~Player(){}
 
 /*
@@ -13,7 +21,7 @@ Player::~Player(){}
 * returns the name of the player
 */
 string Player::getName(){
-    return NULL;
+    return name;
 }
 
 /*
@@ -22,7 +30,7 @@ string Player::getName(){
 *returns the strength of the player
 */
 int Player::getStrength() {
-    return 1;
+    return strength;
 }
 
 /*
@@ -31,5 +39,5 @@ int Player::getStrength() {
 *returns the speed of the player
 */
 int Player::getSpeed() {
-    return 1;
+    return speed;
 }

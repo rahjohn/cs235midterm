@@ -5,9 +5,9 @@
 #include <sstream>
 
 RedRover::RedRover(){
-    roster = new doubleLinkedList<playerStruct>();
-    teamA = new doubleLinkedList<playerStruct>();
-    teamB = new doubleLinkedList<playerStruct>();
+    roster = new doubleLinkedList<Player>();
+    teamA  = new doubleLinkedList<Player>();
+    teamB  = new doubleLinkedList<Player>();
 }
 RedRover::~RedRover(){
     roster->clear();
@@ -41,25 +41,17 @@ bool RedRover::addToRoster(string player_list) {
     bool added = false;
     string name, strength, speed;
     stringstream ss(player_list);
-    ss >> name;
-    ss >> strength;
-    ss >> speed;
-    player.name = name;
-    player.strength = strength;
-    player.speed = speed;
-    if (roster->valid(player)) {
+    do {
+        ss >> name;
+        if (ss.fail()) return false;
+        ss >> strength;
+        if (ss.fail()) return false;
+        ss >> speed;
+        if (ss.fail()) return false;
+        Player * player = new Player(name, strength, speed);
         roster->insertTail(player);
         added = true;
-    }
-    while(ss){
-        ss >> name;
-        ss >> strength;
-        ss >> speed;
-        if (roster->valid(player)) {
-            roster->insertTail(player);
-            added = true;
-        }
-    }
+    } while(ss);
     return added;
 }
 
@@ -108,9 +100,9 @@ string RedRover::getRoster() {
     int size = roster->size();
     for(int i=0; i<size; i++){
         if(i == size-1) {
-            ss << roster->at(i);
+            //ss << roster->at(i);
         } else {
-            ss << roster->at(i) << " ";
+            //ss << roster->at(i) << " ";
         }
     }
     return ss.str();
