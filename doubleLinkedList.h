@@ -94,6 +94,10 @@ public:
         if(empty(value)) {
             return false;
         }
+        if(head == NULL){
+            head = new Node(value);
+            return true;
+        }
         if(valid(value)) {
             Node * insert = new Node(value);
             Node * temp = head;

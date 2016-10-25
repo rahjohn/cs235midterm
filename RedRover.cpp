@@ -39,20 +39,29 @@ RedRover::~RedRover(){
 * Returns true if players were added to the roster, false otherwise
 */
 bool RedRover::addToRoster(string player_list) {
-    bool added = false;
+    bool added = true;
     string name, strength, speed;
     stringstream ss(player_list);
-    do {
-        ss >> name;
-        if (ss.fail()) return false;
-        ss >> strength;
-        if (ss.fail()) return false;
-        ss >> speed;
-        if (ss.fail()) return false;
-        Player * player = new Player(name, strength, speed);
-        roster->insertHead(player);
-        added = true;
-    } while(ss);
+    int c = 1;
+    string str = ss.str();
+    int size = str.size();
+    for(int i=0; i<size; i++){
+        if(isspace(str[i])){
+            c++;
+        }
+    }
+    if(c%3 ==0) {
+        while (ss >> name && ss >> strength && ss >> speed) {
+            if (ss.fail()) {
+                return false;
+            } else {
+                Player *player = new Player(name, strength, speed);
+                roster->insertHead(player);
+            }
+        }
+    } else {
+        cout << "No players have been added to the roster\n";
+    }
     return added;
 }
 
@@ -100,10 +109,10 @@ string RedRover::getRoster() {
     string name;
     int size = roster->size();
     for(int i=0; i<size; i++){
-        if(i == size-1) {
-            //ss << roster->at(i);
+        if(i == size-1) { //if it is the last thing in the list don't add a space
+            ss << roster->at(i)->getName();
         } else {
-            //ss << roster->at(i) << " ";
+            ss << roster->at(i)->getName() << " ";
         }
     }
     return ss.str();
