@@ -4,7 +4,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "PlayerInterface.h"
-#include "DataStructure.h"
+#include "doubleLinkedList.h"
 
 class Player : public PlayerInterface {
 public:

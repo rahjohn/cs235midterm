@@ -3,23 +3,18 @@
  */
 #include "RedRover.h"
 #include <sstream>
-#include "DataStructure.h"
-#include "doubleLinkedList.h"
 
 RedRover::RedRover(){
-    roster = new doubleLinkedList<string>();
-    teamA = new doubleLinkedList<string>();
-    teamB = new doubleLinkedList<string>();
+    roster = new doubleLinkedList<playerStruct>();
+    teamA = new doubleLinkedList<playerStruct>();
+    teamB = new doubleLinkedList<playerStruct>();
 }
 RedRover::~RedRover(){
-    players->clear();
+    roster->clear();
+    teamA->clear();
+    teamB->clear();
 }
 
-struct playerStruct {
-    string name;
-    string strength;
-    string speed;
-} player;
 /*
 * addToRoster()
 *
@@ -49,16 +44,19 @@ bool RedRover::addToRoster(string player_list) {
     ss >> name;
     ss >> strength;
     ss >> speed;
-    if (players->valid(name)) {
-        players->insertTail(name);
+    player.name = name;
+    player.strength = strength;
+    player.speed = speed;
+    if (roster->valid(player)) {
+        roster->insertTail(player);
         added = true;
     }
     while(ss){
         ss >> name;
         ss >> strength;
         ss >> speed;
-        if (players->valid(name)) {
-            players->insertTail(name);
+        if (roster->valid(player)) {
+            roster->insertTail(player);
             added = true;
         }
     }
@@ -71,7 +69,7 @@ bool RedRover::addToRoster(string player_list) {
 * Returns the number of players in the roster.
 */
 int RedRover::getRosterSize() {
-    return players->size();
+    return roster->size();
 }
 
 /*
@@ -107,12 +105,12 @@ int RedRover::getTeamBSize() {
 string RedRover::getRoster() {
     stringstream ss;
     string name;
-    int size = players->size();
+    int size = roster->size();
     for(int i=0; i<size; i++){
         if(i == size-1) {
-            ss << players->at(i);
+            ss << roster->at(i);
         } else {
-            ss << players->at(i) << " ";
+            ss << roster->at(i) << " ";
         }
     }
     return ss.str();
@@ -157,7 +155,7 @@ string RedRover::getTeamB() {
 * Returns NULL if the index is out of range
 */
 PlayerInterface* RedRover::rosterAt(int index) {
-    return NULL;
+    return roster->at(index);
 }
 
 /*
@@ -167,7 +165,7 @@ PlayerInterface* RedRover::rosterAt(int index) {
 * Returns NULL if the index is out of range
 */
 PlayerInterface* RedRover::teamAAt(int index) {
-    return NULL;
+    return teamA->at(index);
 }
 
 /*
@@ -177,7 +175,7 @@ PlayerInterface* RedRover::teamAAt(int index) {
 * Returns NULL if the index is out of range
 */
 PlayerInterface* RedRover::teamBAt(int index) {
-    return NULL;
+    return teamB->at(index);
 }
 
 /*
@@ -202,7 +200,14 @@ void RedRover::shuffleRoster() {}
 * returns true if Team A and Team B are created successfully, false otherwise
 */
 bool RedRover::createTeams() {
-    return false;
+    if(roster->size() < 4) {
+        return false;
+    } else {
+        int size = roster->size();
+        for(int i=0; i<size; i++){
+
+        }
+    }
 }
 
 /*
