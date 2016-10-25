@@ -28,9 +28,9 @@ public:
     virtual void rosterReset();
     virtual void autoPlay();
 private:
-    doubleLinkedList<Player> * roster;
-    doubleLinkedList<Player> * teamA;
-    doubleLinkedList<Player> * teamB;
+    doubleLinkedList<Player*> * roster;
+    doubleLinkedList<Player*> * teamA;
+    doubleLinkedList<Player*> * teamB;
 };
 
 #endif

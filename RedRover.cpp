@@ -5,10 +5,11 @@
 #include <sstream>
 
 RedRover::RedRover(){
-    roster = new doubleLinkedList<Player>();
-    teamA  = new doubleLinkedList<Player>();
-    teamB  = new doubleLinkedList<Player>();
+    roster = new doubleLinkedList<Player*>();
+    teamA  = new doubleLinkedList<Player*>();
+    teamB  = new doubleLinkedList<Player*>();
 }
+
 RedRover::~RedRover(){
     roster->clear();
     teamA->clear();
@@ -49,7 +50,7 @@ bool RedRover::addToRoster(string player_list) {
         ss >> speed;
         if (ss.fail()) return false;
         Player * player = new Player(name, strength, speed);
-        roster->insertTail(player);
+        roster->insertHead(player);
         added = true;
     } while(ss);
     return added;

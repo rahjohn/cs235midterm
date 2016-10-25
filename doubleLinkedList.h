@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-#include "Player.h"
 
 using namespace std;
 
@@ -91,9 +90,9 @@ public:
 
            Do not allow duplicate values in the list.
     */
-    virtual void insertTail( T value) {
+    virtual bool insertTail( T value) {
         if(empty(value)) {
-            return;
+            return false;
         }
         if(valid(value)) {
             Node * insert = new Node(value);
@@ -104,6 +103,7 @@ public:
             temp -> next = insert;
             temp = NULL;
             insert = NULL;
+            return true;
         }
     }
     /*
