@@ -2,6 +2,7 @@
  * CS 235 Fall 2016 Midterm
  */
 #include "Player.h"
+#include "doubleLinkedList.h"
 
 Player::Player(){}
 Player::~Player(){}

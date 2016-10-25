@@ -3,14 +3,23 @@
  */
 #include "RedRover.h"
 #include <sstream>
+#include "DataStructure.h"
+#include "doubleLinkedList.h"
 
 RedRover::RedRover(){
-    players = new doubleLinkedList<string>();
+    roster = new doubleLinkedList<string>();
+    teamA = new doubleLinkedList<string>();
+    teamB = new doubleLinkedList<string>();
 }
 RedRover::~RedRover(){
     players->clear();
 }
 
+struct playerStruct {
+    string name;
+    string strength;
+    string speed;
+} player;
 /*
 * addToRoster()
 *
@@ -34,12 +43,26 @@ RedRover::~RedRover(){
 * Returns true if players were added to the roster, false otherwise
 */
 bool RedRover::addToRoster(string player_list) {
+    bool added = false;
     string name, strength, speed;
     stringstream ss(player_list);
     ss >> name;
     ss >> strength;
     ss >> speed;
-    players->insertHead(name);
+    if (players->valid(name)) {
+        players->insertTail(name);
+        added = true;
+    }
+    while(ss){
+        ss >> name;
+        ss >> strength;
+        ss >> speed;
+        if (players->valid(name)) {
+            players->insertTail(name);
+            added = true;
+        }
+    }
+    return added;
 }
 
 /*
@@ -82,7 +105,17 @@ int RedRover::getTeamBSize() {
 * Returns the string representation of the roster
 */
 string RedRover::getRoster() {
-    return players->at(1);
+    stringstream ss;
+    string name;
+    int size = players->size();
+    for(int i=0; i<size; i++){
+        if(i == size-1) {
+            ss << players->at(i);
+        } else {
+            ss << players->at(i) << " ";
+        }
+    }
+    return ss.str();
 }
 
 /*
