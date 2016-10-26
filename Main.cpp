@@ -14,6 +14,9 @@ void inputPlayers(RedRover * redRover){
     if(redRover->addToRoster(input)) {
         cout << redRover->getRosterSize() << endl;
         cout << redRover->getRoster() << endl;
+        redRover->rosterReset();
+        cout << redRover->getRosterSize() << endl;
+        cout << redRover->getRoster() << endl;
     } else {
         cout << "something didn't work" << endl;
     }

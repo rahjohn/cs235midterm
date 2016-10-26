@@ -206,7 +206,9 @@ PlayerInterface* RedRover::teamBAt(int index) {
 * Shuffles the players in the roster
 * Does not affect the players in Team A or Team B
 */
-void RedRover::shuffleRoster() {}
+void RedRover::shuffleRoster() {
+    roster->remove(0);
+}
 
 /*
 * createTeams()
@@ -266,7 +268,10 @@ void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defende
 *
 * Empties both teams (does not affect the roster)
 */
-void RedRover::teamReset() {}
+void RedRover::teamReset() {
+    teamA->clear();
+    teamB->clear();
+}
 
 /*
 * rosterReset()
@@ -274,7 +279,9 @@ void RedRover::teamReset() {}
 * Empties all players from the roster
 * (does nothing to Team A or Team B)
 */
-void RedRover::rosterReset() {}
+void RedRover::rosterReset() {
+    roster->clear();
+}
 
 /*
 * autoPlay()
