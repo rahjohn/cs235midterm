@@ -144,12 +144,32 @@ public:
            The list may or may not include a node with the given value.
     */
     virtual void remove(T value) {
-        if (value == NULL) return;
-        else if (value == head) {
-            head = value->next;
+        if(valid(value)) {
+            return;
+        }
+        Node * temp = head;
+        if(temp -> data == value) {
+            head = temp -> next;
+            delete temp;
         } else {
-            value->prev->next = value->next;
-            if (value->next != NULL) value->next->prev = value->prev;
+            if(temp -> next == NULL){
+                return;
+            }
+            while (temp -> next -> data != value) {
+                if (temp -> next == NULL) {
+                    return;
+                }
+                temp = temp -> next;
+            }
+            Node * curr = temp -> next;
+            if (curr -> next == NULL) {
+                temp -> next = NULL;
+            } else {
+                temp -> next = curr -> next;
+            }
+            delete curr;
+            curr = NULL;
+            temp = NULL;
         }
     }
 

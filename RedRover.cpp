@@ -239,18 +239,15 @@ bool RedRover::createTeams() {
                 string speed = to_string(roster->at(i)->getSpeed());
                 Player *player = new Player(name, strength, speed);
                 teamA->insertTail(player);
-                roster->remove(player);
             } else {
                 string name = roster->at(i)->getName();
                 string strength = to_string(roster->at(i)->getStrength());
                 string speed = to_string(roster->at(i)->getSpeed());
                 Player *player = new Player(name, strength, speed);
                 teamB->insertTail(player);
-                roster->remove(player);
             }
         }
-        //roster->clear();
-        //roster->remove(player;
+        roster->clear();
         return true;
     }
     return false;
