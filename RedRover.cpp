@@ -11,9 +11,8 @@ RedRover::RedRover(){
 }
 
 RedRover::~RedRover(){
-    roster->clear();
-    teamA->clear();
-    teamB->clear();
+    rosterReset();
+    teamReset();
 }
 
 /*
@@ -207,6 +206,12 @@ PlayerInterface* RedRover::teamBAt(int index) {
 * Does not affect the players in Team A or Team B
 */
 void RedRover::shuffleRoster() {
+    srand(time(0));
+    int size = getRosterSize();
+    for (int j = 0; j <= size; j++) {
+        int i = 1 + rand()%52;
+        int k = 1 + rand()%52;
+    }
 }
 
 /*
@@ -227,16 +232,23 @@ bool RedRover::createTeams() {
         return false;
     } else {
         int size = roster->size();
-        for(int i=0; i<size; i+2){
-            string name = roster->at(i)->getName();
-            string strength = to_string(roster->at(i)->getStrength());
-            string speed = to_string(roster->at(i)->getSpeed());
-            Player *player = new Player(name, strength, speed);
-            teamA->insertTail(player);
-            //roster->remove();
-            teamB->insertTail(roster->at(i+1));
-            //roster->remove(i+1);
+        for(int i=0; i<size; i++){
+            if(i == 0 || i%2 == 0) {
+                string name = roster->at(i)->getName();
+                string strength = to_string(roster->at(i)->getStrength());
+                string speed = to_string(roster->at(i)->getSpeed());
+                Player *player = new Player(name, strength, speed);
+                teamA->insertTail(player);
+            } else {
+                string name = roster->at(i)->getName();
+                string strength = to_string(roster->at(i)->getStrength());
+                string speed = to_string(roster->at(i)->getSpeed());
+                Player *player = new Player(name, strength, speed);
+                teamB->insertTail(player);
+            }
         }
+        roster->clear();
+        return true;
     }
 }
 

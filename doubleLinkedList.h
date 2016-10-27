@@ -13,6 +13,7 @@ private:
         T data;
         T value;
         Node * next;
+        Node * prev;
         Node(T data) : data(data) {
             this -> next = NULL;
         };
@@ -21,6 +22,7 @@ private:
     };
     Node * head = NULL;
     Node * curr;
+    Node * tail = head;
 public:
 
     doubleLinkedList() {
@@ -90,8 +92,8 @@ public:
 
            Do not allow duplicate values in the list.
     */
-    virtual bool insertTail( T value) {
-        if(empty(value)) {
+    virtual bool insertTail(T value) {
+        if(empty(value)){
             return false;
         }
         if(head == NULL){
@@ -101,13 +103,12 @@ public:
         if(valid(value)) {
             Node * insert = new Node(value);
             Node * temp = head;
-            while (temp -> next != NULL) {
-                temp = temp -> next;
+            while (temp->next != NULL) {
+                temp = temp->next;
             }
-            temp -> next = insert;
-            temp = NULL;
-            insert = NULL;
-            return true;
+            temp->next = insert;
+            insert->prev = tail;
+            tail = insert;
         }
     }
     /*
@@ -171,6 +172,7 @@ public:
             temp = NULL;
         }
     }
+
     /*
            clear
 
