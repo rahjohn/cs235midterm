@@ -207,7 +207,6 @@ PlayerInterface* RedRover::teamBAt(int index) {
 * Does not affect the players in Team A or Team B
 */
 void RedRover::shuffleRoster() {
-    roster->remove(0);
 }
 
 /*
@@ -224,7 +223,6 @@ void RedRover::shuffleRoster() {
 * returns true if Team A and Team B are created successfully, false otherwise
 */
 bool RedRover::createTeams() {
-    /*
     if(roster->size() < 4) {
         return false;
     } else {
@@ -235,12 +233,11 @@ bool RedRover::createTeams() {
             string speed = to_string(roster->at(i)->getSpeed());
             Player *player = new Player(name, strength, speed);
             teamA->insertTail(player);
-            roster->remove();
+            //roster->remove();
             teamB->insertTail(roster->at(i+1));
-            roster->remove(i+1);
+            //roster->remove(i+1);
         }
     }
-     */
 }
 
 /*
