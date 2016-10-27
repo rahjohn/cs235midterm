@@ -13,6 +13,7 @@ private:
         T data;
         T value;
         Node * next;
+        Node * prev;
         Node(T data) : data(data) {
             this -> next = NULL;
         };
@@ -21,6 +22,7 @@ private:
     };
     Node * head = NULL;
     Node * curr;
+    Node * tail = head;
 public:
 
     doubleLinkedList() {
@@ -91,7 +93,7 @@ public:
            Do not allow duplicate values in the list.
     */
     virtual bool insertTail( T value) {
-        if(empty(value)) {
+        if(empty(value)){
             return false;
         }
         if(head == NULL){
@@ -101,13 +103,12 @@ public:
         if(valid(value)) {
             Node * insert = new Node(value);
             Node * temp = head;
-            while (temp -> next != NULL) {
-                temp = temp -> next;
+            while (temp->next != NULL) {
+                temp = temp->next;
             }
-            temp -> next = insert;
-            temp = NULL;
-            insert = NULL;
-            return true;
+            temp->next = insert;
+            insert->prev = tail;
+            tail = insert;
         }
     }
     /*
@@ -143,32 +144,19 @@ public:
            The list may or may not include a node with the given value.
     */
     virtual void remove(T value) {
-        if(valid(value)) {
-            return;
-        }
         Node * temp = head;
-        if(temp -> data == value) {
-            head = temp -> next;
+        if(value == 0){
+            head = temp->next;
             delete temp;
         } else {
-            if(temp -> next == NULL){
-                return;
+            for (int i = 0; i <= value; i++) {
+                curr = temp; //1 the one to be deleted
+                temp = temp->next; //2
             }
-            while (temp -> next -> data != value) {
-                if (temp -> next == NULL) {
-                    return;
-                }
-                temp = temp -> next;
-            }
-            Node * curr = temp -> next;
-            if (curr -> next == NULL) {
-                temp -> next = NULL;
-            } else {
-                temp -> next = curr -> next;
-            }
-            delete curr;
+            temp->prev = curr->prev;
+            curr->prev->next = temp;
             curr = NULL;
-            temp = NULL;
+            delete curr;
         }
     }
     /*
