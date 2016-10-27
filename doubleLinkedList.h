@@ -92,7 +92,7 @@ public:
 
            Do not allow duplicate values in the list.
     */
-    virtual bool insertTail( T value) {
+    virtual bool insertTail(T value) {
         if(empty(value)){
             return false;
         }
@@ -144,21 +144,15 @@ public:
            The list may or may not include a node with the given value.
     */
     virtual void remove(T value) {
-        Node * temp = head;
-        if(value == 0){
-            head = temp->next;
-            delete temp;
+        if (value == NULL) return;
+        else if (value == head) {
+            head = value->next;
         } else {
-            for (int i = 0; i <= value; i++) {
-                curr = temp; //1 the one to be deleted
-                temp = temp->next; //2
-            }
-            temp->prev = curr->prev;
-            curr->prev->next = temp;
-            curr = NULL;
-            delete curr;
+            value->prev->next = value->next;
+            if (value->next != NULL) value->next->prev = value->prev;
         }
     }
+
     /*
            clear
 

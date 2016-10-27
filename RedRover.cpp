@@ -250,7 +250,7 @@ bool RedRover::createTeams() {
             }
         }
         //roster->clear();
-        roster->remove(1);
+        //roster->remove(player;
         return true;
     }
     return false;
