@@ -11,20 +11,21 @@ template<class T> class doubleLinkedList {
 private:
     struct Node { //creating nodes for the linked list
         T data;
-        T value;
         Node * next;
         Node * prev;
         Node(T data) : data(data) {
             this -> next = NULL;
         };
-        Node (T data, Node * next) : data(data), next(next){};
+        Node (T data, Node * next, Node * prev) : data(data), next(next), prev(prev){};
         virtual ~Node(){};
     };
+    Node * a = NULL;
     Node * head = NULL;
     Node * curr;
     Node * tail = head;
-public:
+    Node * b = NULL;
 
+public:
     doubleLinkedList() {
         head = NULL;
     };
@@ -39,52 +40,55 @@ public:
            Do not allow duplicate values in the list.
     */
 
-    bool valueIsInList(T value) {
+
+    bool valueIsInList(T data) {
         if (this->size() > 0) {
-            if (head->value == value) {
+            if (head->data == data) {
                 return true;
             }
             curr = head;
             while (curr->next != NULL) {
                 curr = curr->next;
-                if (curr->value == value) {
+                if (curr->data == data) {
                     return true;
                 }
             }
         }
         return false;
     }
-    bool valid(T value) {
+    bool valid(T data) {
         bool valid = true;
         Node * temp = head;
         while (valid == true && temp != NULL) {
-            if (value == temp -> data) {
+            if (data == temp -> data) {
                 valid = false;
             }
             temp = temp -> next;
         }
         temp = NULL;
-        return (!valueIsInList(value) && valid) ;
+        return (!valueIsInList(data) && valid) ;
     }
-    bool empty(T value) {
+    bool empty(T data) {
         if (head ==NULL) {
-            head = new Node(value);
+            head = new Node(data);
             return true;
         } else {
             return false;
         }
     }
-    virtual void insertHead(T value) {
-        if (empty(value)) {
+    /*
+    virtual void insertHead(T data) {
+        if (empty(data)) {
             return;
         }
-        if(valid(value)) {
-            Node * insert = new Node(value, head);
+        if(valid(data)) {
+            Node * insert = new Node(data, head, NULL);
             head = insert;
             insert = NULL;
         }
 
     }
+     */
     /*
            insertTail
 
@@ -92,16 +96,16 @@ public:
 
            Do not allow duplicate values in the list.
     */
-    virtual bool insertTail(T value) {
-        if(empty(value)){
-            return false;
-        }
+    virtual bool insertTail(T data) {
         if(head == NULL){
-            head = new Node(value);
+            head = new Node(data);
+            head->prev = NULL;
+            head->next = NULL;
+            tail = NULL;
             return true;
         }
-        if(valid(value)) {
-            Node * insert = new Node(value);
+        if(valid(data)) {
+            Node * insert = new Node(data, NULL, tail);
             Node * temp = head;
             while (temp->next != NULL) {
                 temp = temp->next;
@@ -109,6 +113,7 @@ public:
             temp->next = insert;
             insert->prev = tail;
             tail = insert;
+            tail->next = NULL;
         }
     }
     /*
@@ -120,22 +125,23 @@ public:
            A node should only be added if the node whose value is equal to
            insertionNode is in the list. Do not allow duplicate values in the list.
     */
-
-    virtual void insertAfter(T value, T insertionNode) {
-        if(valid(value) == false && valid(insertionNode) == true) {
+/*
+    virtual void insertAfter(T data, T insertionNode) {
+        if(valid(data) == false && valid(insertionNode) == true) {
             return;
         }
-        if(valid(value) == true && valid(insertionNode) == false) {
+        if(valid(data) == true && valid(insertionNode) == false) {
             Node * temp = head;
             while (temp -> data != insertionNode) {
                 temp = temp -> next;
             }
-            Node * insert = new Node(value, temp -> next);
+            Node * insert = new Node(data, temp -> next, );
             temp -> next = insert;
             temp = NULL;
             insert = NULL;
         }
     }
+    */
     /*
            remove
 
@@ -143,36 +149,52 @@ public:
 
            The list may or may not include a node with the given value.
     */
-    virtual void remove(T value) {
-        if(valid(value)) {
+    virtual void remove(T data) {
+        if(valid(data)) { //if the node doesn't exist exit out
             return;
         }
         Node * temp = head;
-        if(temp -> data == value) {
-            head = temp -> next;
-            delete temp;
-        } else {
-            if(temp -> next == NULL){
+        if(head->data == data) { //if node is head
+            removeHead();
+        } else { //if the node is in the middle or tail
+            if(temp->next == NULL){ //something went wrong
                 return;
             }
-            while (temp -> next -> data != value) {
-                if (temp -> next == NULL) {
+            while (temp -> next -> data != data) { //while we have not reached our desired node keep going down the list
+                if (temp -> next == NULL) { //check for errors
                     return;
                 }
-                temp = temp -> next;
+                temp = temp -> next; //just go to the next node
             }
-            Node * curr = temp -> next;
-            if (curr -> next == NULL) {
-                temp -> next = NULL;
-            } else {
+            Node * curr = temp -> next; //the one we want to delete
+            Node * a = curr->next; //the one after the one we want to delete
+            if (curr == tail) { //if the one we want to delete is tail
+                removeTail();
+            } else { //if the one we want to delete is in the middle somewhere
                 temp -> next = curr -> next;
+                a->prev = temp;
+                delete curr;
             }
-            delete curr;
-            curr = NULL;
-            temp = NULL;
         }
     }
 
+    virtual void removeHead() {
+        if(head->next != NULL) {
+            Node * temp = head;
+            head = temp->next;
+            head->prev = NULL;
+            delete temp;
+        } else {
+            head = NULL;
+        }
+    }
+
+    virtual void removeTail(){
+        Node * temp = tail->prev;
+        delete tail;
+        temp->next=NULL;
+        tail=temp;
+    }
     /*
            clear
 
@@ -236,6 +258,17 @@ public:
             }
         }
         return size;
+    }
+    virtual void shuffle() {
+        for (a = head, b = head->next; b->next != NULL; a = b) {
+            if(rand()%1 == 1) {
+                b->prev = a->prev;
+                a->prev = b;
+                a->next = b->next;
+                b->next = a;
+                a = a->next;
+            }
+        }
     }
 };
 

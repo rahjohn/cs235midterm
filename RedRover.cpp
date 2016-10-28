@@ -38,6 +38,7 @@ RedRover::~RedRover(){
 * Returns true if players were added to the roster, false otherwise
 */
 bool RedRover::addToRoster(string player_list) {
+    player_list = "sam 0 0\n rachel 0 0\n jacob 0 0\n tyler 0 0"; //for testing, delete when done
     bool added = true;
     string name, strength, speed;
     stringstream ss(player_list);
@@ -107,6 +108,9 @@ string RedRover::getRoster() {
     stringstream ss;
     string name;
     int size = roster->size();
+    if(size == 0) {
+        return "Roster empty";
+    }
     for(int i=0; i<size; i++){
         if(i == size-1) { //if it is the last thing in the list don't add a space
             ss << roster->at(i)->getName();
@@ -133,6 +137,9 @@ string RedRover::getTeamA() {
     stringstream ss;
     string name;
     int size = teamA->size();
+    if(size == 0) {
+        return "Team A empty";
+    }
     for(int i=0; i<size; i++){
         if(i == size-1) { //if it is the last thing in the list don't add a space
             ss << teamA->at(i)->getName();
@@ -159,6 +166,9 @@ string RedRover::getTeamB() {
     stringstream ss;
     string name;
     int size = teamB->size();
+    if(size == 0) {
+        return "Team B empty";
+    }
     for(int i=0; i<size; i++){
         if(i == size-1) { //if it is the last thing in the list don't add a space
             ss << teamB->at(i)->getName();
@@ -176,7 +186,11 @@ string RedRover::getTeamB() {
 * Returns NULL if the index is out of range
 */
 PlayerInterface* RedRover::rosterAt(int index) {
-    return roster->at(index);
+    if(index >= getRosterSize() || index < 0 || roster->at(0) == NULL){
+        return NULL;
+    } else {
+        return roster->at(index);
+    }
 }
 
 /*
@@ -186,7 +200,11 @@ PlayerInterface* RedRover::rosterAt(int index) {
 * Returns NULL if the index is out of range
 */
 PlayerInterface* RedRover::teamAAt(int index) {
-    return teamA->at(index);
+    if(index >= getTeamASize() || index < 0 || teamA->at(0) == NULL){
+        return NULL;
+    } else {
+        return teamA->at(index);
+    }
 }
 
 /*
@@ -196,7 +214,11 @@ PlayerInterface* RedRover::teamAAt(int index) {
 * Returns NULL if the index is out of range
 */
 PlayerInterface* RedRover::teamBAt(int index) {
-    return teamB->at(index);
+    if(index >= getTeamBSize() || index < 0 || teamB->at(0) == NULL){
+        return NULL;
+    } else {
+        return teamB->at(index);
+    }
 }
 
 /*
@@ -206,11 +228,21 @@ PlayerInterface* RedRover::teamBAt(int index) {
 * Does not affect the players in Team A or Team B
 */
 void RedRover::shuffleRoster() {
-    srand(time(0));
+    /*
+    if(roster->size() <= 1){ //you can't shuffle something that has nothing or only one thing
+        return;
+    } else {
+        int random = rand()%getRosterSize();
+        for(int i=0; i<random; i++) {
+            roster->shuffle();
+        }
+    }
+     */
     int size = getRosterSize();
-    for (int j = 0; j <= size; j++) {
-        int i = 1 + rand()%52;
-        int k = 1 + rand()%52;
+    for(int i=0; i<size; i++) {
+        roster->removeHead();
+        cout << getRosterSize() << endl;
+        cout << getRoster() << endl;
     }
 }
 
@@ -234,20 +266,21 @@ bool RedRover::createTeams() {
         int size = roster->size();
         for(int i=0; i<size; i++){
             if(i == 0 || i%2 == 0) {
-                string name = roster->at(i)->getName();
-                string strength = to_string(roster->at(i)->getStrength());
-                string speed = to_string(roster->at(i)->getSpeed());
+                string name = roster->at(0)->getName();
+                string strength = to_string(roster->at(0)->getStrength());
+                string speed = to_string(roster->at(0)->getSpeed());
                 Player *player = new Player(name, strength, speed);
                 teamA->insertTail(player);
+                roster->removeHead();
             } else {
-                string name = roster->at(i)->getName();
-                string strength = to_string(roster->at(i)->getStrength());
-                string speed = to_string(roster->at(i)->getSpeed());
+                string name = roster->at(0)->getName();
+                string strength = to_string(roster->at(0)->getStrength());
+                string speed = to_string(roster->at(0)->getSpeed());
                 Player *player = new Player(name, strength, speed);
                 teamB->insertTail(player);
+                roster->removeHead();
             }
         }
-        roster->clear();
         return true;
     }
 }
