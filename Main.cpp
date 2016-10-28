@@ -23,9 +23,14 @@ void inputPlayers(RedRover * redRover){
     file.close();
     input = ss.str();
     if(redRover->addToRoster(input)) {
-        cout << redRover->getRoster() << endl;
+        redRover->shuffleRoster();
         redRover->createTeams();
-        redRover->sendSomeoneOver(redRover->teamAAt(2), redRover->teamBAt(2));
+        cout << redRover->getRoster() << endl;
+        cout << redRover->getTeamA() << endl;
+        cout << redRover->getTeamB() << endl;
+        redRover->sendSomeoneOver(redRover->teamAAt(redRover->getTeamASize()-1), redRover->teamBAt(redRover->getTeamBSize()-1));
+        cout << redRover->getTeamA() << endl;
+        cout << redRover->getTeamB() << endl;
     } else {
         cout << "something didn't work" << endl;
     }

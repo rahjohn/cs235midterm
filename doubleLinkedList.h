@@ -124,7 +124,6 @@ public:
            A node should only be added if the node whose value is equal to
            insertionNode is in the list. Do not allow duplicate values in the list.
     */
-/*
     virtual void insertAfter(T data, T insertionNode) {
         if(valid(data) == false && valid(insertionNode) == true) {
             return;
@@ -134,13 +133,12 @@ public:
             while (temp -> data != insertionNode) {
                 temp = temp -> next;
             }
-            Node * insert = new Node(data, temp -> next, );
+            Node * insert = new Node(data, temp -> next, temp);
             temp -> next = insert;
             temp = NULL;
             insert = NULL;
         }
     }
-    */
     /*
            remove
 
