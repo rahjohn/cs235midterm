@@ -57,6 +57,33 @@ add that player onto the end of the current roster. You may allow multiple playe
 to be placed in the roster.
 */
 bool RedRover::addToRoster(string player_list) {
+    player_list = "rachel\n"
+            "2\n"
+            "2\n"
+            "sam\n"
+            "3\n"
+            "3\n"
+            "tyler\n"
+            "5\n"
+            "3\n"
+            "bryce\n"
+            "4\n"
+            "2\n"
+            "jacob\n"
+            "6\n"
+            "6\n"
+            "kaylee\n"
+            "5\n"
+            "2\n"
+            "sara\n"
+            "2\n"
+            "2\n"
+            "emily\n"
+            "2\n"
+            "2\n"
+            "abigail\n"
+            "1\n"
+            "1";
     bool added = true;
     string name, strength, speed;
     int intStrength, intSpeed;
@@ -69,7 +96,7 @@ bool RedRover::addToRoster(string player_list) {
             c++;
         }
     }
-    c -= 1;
+    //c -= 1;
     if (c % 3 == 0) {
         while (ss >> name && ss >> strength && ss >> speed) {
             if (ss.fail()) {
@@ -369,7 +396,6 @@ The function should then display something like the following:
 “Team B wins! Sora, Kairi, Namine, Olette, Ansem.”
 */
 void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defender) {
-    cout << runner->getName() << endl << defender->getName() << endl;
     if ((teamA->valueIsInList((Player *) runner) && teamA->valueIsInList((Player *) defender)) ||
         (teamB->valueIsInList((Player *) runner) &&
          teamB->valueIsInList((Player *) defender))) { //if the runner and defender are on the same team
@@ -384,7 +410,7 @@ void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defende
                 break;
             }
         }
-        if (location = -1 || team == -1) { //if the defender is not on teamA then look through teamB
+        if (location == -1 || team == -1) { //if the defender is not on teamA then look through teamB
             for (int i = 0; i < getTeamASize(); i++) { //if the defender is on teamB then set its location
                 if (teamB->at(i) == defender) {
                     location = i;
@@ -393,16 +419,11 @@ void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defende
                 }
             }
         }
-        /*
-        if(location = -1 || team == -1){
-            return;
-        }
-         */
         int runnerTotal = runner->getSpeed() + runner->getStrength(); //total of runners speed and strength
         int defenderTotal = 0;
         int defenderStrength = 0;
         int defenderNextStrength = 0;
-        if (location == getTeamASize()) { //if the defender is the last one in the list
+        if (location == getTeamASize()-1) { //if the defender is the last one in the list
             if (team == 1) { //if the defender is on teamA
                 defenderStrength = defender->getStrength();
                 defenderNextStrength = teamA->at(location - 1)->getStrength();
@@ -434,7 +455,7 @@ void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defende
                     teamA->insertAfter(player, teamA->at(location - 1));
                     teamB->remove((Player *) runner);
                 }
-            } else {
+            } else { //if the defender is on teamB
                 defenderStrength = defender->getStrength();
                 defenderNextStrength = teamB->at(location - 1)->getStrength();
                 defenderTotal = defenderStrength + defenderNextStrength; //total of both defenders strengths
@@ -445,7 +466,8 @@ void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defende
                         int strength = teamB->at(location - 1)->getStrength();
                         int speed = teamB->at(location - 1)->getSpeed();
                         Player *player = new Player(name, strength, speed); //copy the second defender
-                        teamA->insertAfter(player, (Player *) runner); //insert second defender after the runner's original position in teamB
+                        teamA->insertAfter(player,
+                                           (Player *) runner); //insert second defender after the runner's original position in teamB
                         teamB->remove(teamB->at(location)); //remove the second defender from teamA
                     } else { //if the original defender is stronker than the second defender
                         string name = teamB->at(location)->getName();
@@ -465,25 +487,28 @@ void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defende
                     teamA->remove((Player *) runner);
                 }
             }
-        } else {
+        } else { //anywhere else in the list
             if (team == 1) { //if the defender is on teamA
                 defenderStrength = defender->getStrength();
                 defenderNextStrength = teamA->at(location + 1)->getStrength();
                 defenderTotal = defenderStrength + defenderNextStrength; //total of both defenders strengths
                 if (runnerTotal > defenderTotal) { //if the runner breaks through
-                    if (defenderStrength < defenderNextStrength) { //if the second defender is stronker than the original defender
+                    if (defenderStrength <
+                        defenderNextStrength) { //if the second defender is stronker than the original defender
                         string name = teamA->at(location + 1)->getName();
                         int strength = teamA->at(location + 1)->getStrength();
                         int speed = teamA->at(location + 1)->getSpeed();
                         Player *player = new Player(name, strength, speed); //copy the second defender
-                        teamB->insertAfter(player, (Player *) runner); //insert second defender after the runner's original position in teamB
+                        teamB->insertAfter(player,
+                                           (Player *) runner); //insert second defender after the runner's original position in teamB
                         teamA->remove(teamA->at(location)); //remove the second defender from teamA
                     } else { //if the original defender is stronker than the second defender
                         string name = teamA->at(location)->getName();
                         int strength = teamA->at(location)->getStrength();
                         int speed = teamA->at(location)->getSpeed();
                         Player *player = new Player(name, strength, speed); //copy the original defender
-                        teamB->insertAfter(player, (Player *) runner); //insert original defender after the runner's original position in teamB
+                        teamB->insertAfter(player,
+                                           (Player *) runner); //insert original defender after the runner's original position in teamB
                         teamA->remove(teamA->at(location)); //remove the original defender from teamA
                     }
                 } else { //if the runner didn't break through
@@ -496,15 +521,17 @@ void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defende
                 }
             } else {
                 defenderStrength = defender->getStrength();
-                defenderNextStrength = teamB->at(location - 1)->getStrength();
+                defenderNextStrength = teamB->at(location + 1)->getStrength();
                 defenderTotal = defenderStrength + defenderNextStrength; //total of both defenders strengths
                 if (runnerTotal > defenderTotal) { //if the runner breaks through
-                    if (defenderStrength < defenderNextStrength) { //if the second defender is stronker than the original defender
+                    if (defenderStrength <
+                        defenderNextStrength) { //if the second defender is stronker than the original defender
                         string name = teamB->at(location + 1)->getName();
                         int strength = teamB->at(location + 1)->getStrength();
                         int speed = teamB->at(location + 1)->getSpeed();
                         Player *player = new Player(name, strength, speed); //copy the second defender
-                        teamA->insertAfter(player, (Player *) runner); //insert second defender after the runner's original position in teamB
+                        teamA->insertAfter(player,
+                                           (Player *) runner); //insert second defender after the runner's original position in teamB
                         teamB->remove(teamB->at(location + 1)); //remove the second defender from teamA
                     } else { //if the original defender is stronker than the second defender
                         string name = teamB->at(location)->getName();
@@ -567,4 +594,29 @@ void RedRover::rosterReset() {
 *
 * At the end of the game, print out the name of the winning team and the players on both teams.
 */
-void RedRover::autoPlay() {}
+void RedRover::autoPlay() {
+    srand(time(NULL));
+    int whichPlayerA = 0;
+    int whichPlayerB = 0;
+    while (getTeamASize() > 1 || getTeamBSize() > 1) {
+        if (getTeamASize() <= 1 || getTeamBSize() <= 1) {
+            break;
+        }
+        whichPlayerA = rand() % getTeamASize();
+        whichPlayerB = rand() % getTeamBSize();
+        sendSomeoneOver(teamA->at(whichPlayerA), teamB->at(whichPlayerB));
+        cout << getTeamA() << endl << getTeamB() << endl;
+        if (getTeamASize() <= 1 || getTeamBSize() <= 1) {
+            break;
+        }
+        whichPlayerA = rand() % getTeamASize();
+        whichPlayerB = rand() % getTeamBSize();
+        sendSomeoneOver(teamB->at(whichPlayerB), teamA->at(whichPlayerA));
+        cout << getTeamA() << endl << getTeamB() << endl;
+    }
+    if(getTeamASize() == 1){
+        cout << "Team B Wins!\n";
+    } else {
+        cout << "Team A Wins!\n";
+    }
+}

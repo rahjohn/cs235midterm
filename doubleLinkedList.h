@@ -19,11 +19,9 @@ private:
         Node (T data, Node * next, Node * prev) : data(data), next(next), prev(prev){};
         virtual ~Node(){};
     };
-    Node * a = NULL;
     Node * head = NULL;
     Node * curr;
     Node * tail = head;
-    Node * b = NULL;
 public:
     doubleLinkedList() {
         head = NULL;
