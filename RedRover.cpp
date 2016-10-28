@@ -226,23 +226,29 @@ PlayerInterface* RedRover::teamBAt(int index) {
 *
 * Shuffles the players in the roster
 * Does not affect the players in Team A or Team B
+ * This function will randomly shuffle the Players in your roster. Most students will find it
+convenient to use the rand() function to implement their shuffle function. You will receive credit as long
+as the list is mostly shuffled, but you will only receive half credit for simplistic shuffling like moving every
+Player down one, reversing the order of the list, etc. This function will not affect the order of players
+who are already in Team A or Team B. You must implement your own shuffle algorithm; do not use any
+C++ library functions to shuffle your list.
 */
 void RedRover::shuffleRoster() {
-    /*
     if(roster->size() <= 1){ //you can't shuffle something that has nothing or only one thing
         return;
     } else {
-        int random = rand()%getRosterSize();
-        for(int i=0; i<random; i++) {
-            roster->shuffle();
+        srand(time(NULL));
+        int size = getRosterSize();
+        for(int i=0; i<size; i++) {
+            int random = rand() % getRosterSize();
+            if(random < 0 || random >= size) random = 0;
+            string name = roster->at(random)->getName();
+            string strength = to_string(roster->at(random)->getStrength());
+            string speed = to_string(roster->at(random)->getSpeed());
+            Player *player = new Player(name, strength, speed);
+            roster->remove(roster->at(random));
+            roster->insertTail(player);
         }
-    }
-     */
-    int size = getRosterSize();
-    for(int i=0; i<size; i++) {
-        roster->removeHead();
-        cout << getRosterSize() << endl;
-        cout << getRoster() << endl;
     }
 }
 

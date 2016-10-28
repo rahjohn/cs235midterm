@@ -259,17 +259,6 @@ public:
         }
         return size;
     }
-    virtual void shuffle() {
-        for (a = head, b = head->next; b->next != NULL; a = b) {
-            if(rand()%1 == 1) {
-                b->prev = a->prev;
-                a->prev = b;
-                a->next = b->next;
-                b->next = a;
-                a = a->next;
-            }
-        }
-    }
 };
 
 #endif

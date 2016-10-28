@@ -10,17 +10,12 @@ using namespace std;
 
 void inputPlayers(RedRover * redRover){
     string input;
-    //getline(cin, input);
     if(redRover->addToRoster(input)) {
         cout << redRover->getRosterSize() << endl;
         cout << redRover->getRoster() << endl;
-        redRover->createTeams();
+        redRover->shuffleRoster();
         cout << redRover->getRosterSize() << endl;
         cout << redRover->getRoster() << endl;
-        cout << redRover->getTeamA() << endl;
-        cout << redRover->getTeamASize() << endl;
-        cout << redRover->getTeamB() << endl;
-        cout << redRover->getTeamBSize() << endl;
     } else {
         cout << "something didn't work" << endl;
     }
