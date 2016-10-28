@@ -4,6 +4,7 @@
 #ifndef REDROVER_H
 #define REDROVER_H
 #include "Player.h"
+#include "PlayerInterface.h"
 #include "RedRoverInterface.h"
 #include "doubleLinkedList.h"
 

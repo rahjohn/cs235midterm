@@ -24,7 +24,6 @@ private:
     Node * curr;
     Node * tail = head;
     Node * b = NULL;
-
 public:
     doubleLinkedList() {
         head = NULL;

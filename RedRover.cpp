@@ -57,9 +57,9 @@ add that player onto the end of the current roster. You may allow multiple playe
 to be placed in the roster.
 */
 bool RedRover::addToRoster(string player_list) {
-    //player_list = "sam 0 0 rachel 0 0 jacob 0 0 tyler 0 0 bryce 0 0 "; //for testing, delete when done
     bool added = true;
     string name, strength, speed;
+    int intStrength, intSpeed;
     stringstream ss(player_list);
     int c = 1;
     string str = ss.str();
@@ -70,18 +70,20 @@ bool RedRover::addToRoster(string player_list) {
         }
     }
     c -= 1;
-    cout << c << endl;
     if(c%3 ==0) {
         while (ss >> name && ss >> strength && ss >> speed) {
             if (ss.fail()) {
                 return false;
             } else {
-                Player *player = new Player(name, strength, speed);
+                intStrength = atoi(strength.c_str());
+                intSpeed = atoi(speed.c_str());
+                Player *player = new Player(name, intStrength, intSpeed);
                 roster->insertTail(player);
             }
         }
     } else {
         cout << "No players have been added to the roster\n";
+        return false;
     }
     return added;
 }
@@ -133,9 +135,9 @@ string RedRover::getRoster() {
     }
     for(int i=0; i<size; i++){
         if(i == size-1) { //if it is the last thing in the list don't add a space
-            ss << roster->at(i)->getName();
+            ss << roster->at(i)->getName() << " " << roster->at(i)->getStrength();
         } else {
-            ss << roster->at(i)->getName() << " ";
+            ss << roster->at(i)->getName() << " " << roster->at(i)->getStrength() << " ";
         }
     }
     return ss.str();
@@ -261,8 +263,8 @@ void RedRover::shuffleRoster() {
             int random = rand() % getRosterSize();
             if(random < 0 || random >= size) random = 0;
             string name = roster->at(random)->getName();
-            string strength = to_string(roster->at(random)->getStrength());
-            string speed = to_string(roster->at(random)->getSpeed());
+            int strength = roster->at(random)->getStrength();
+            int speed = roster->at(random)->getSpeed();
             Player *player = new Player(name, strength, speed);
             roster->remove(roster->at(random));
             roster->insertTail(player);
@@ -301,15 +303,15 @@ bool RedRover::createTeams() {
         for(int i=0; i<size; i++){
             if(i == 0 || i%2 == 0) {
                 string name = roster->at(0)->getName();
-                string strength = to_string(roster->at(0)->getStrength());
-                string speed = to_string(roster->at(0)->getSpeed());
+                int strength = roster->at(0)->getStrength();
+                int speed = roster->at(0)->getSpeed();
                 Player *player = new Player(name, strength, speed);
                 teamA->insertTail(player);
                 roster->removeHead();
             } else {
                 string name = roster->at(0)->getName();
-                string strength = to_string(roster->at(0)->getStrength());
-                string speed = to_string(roster->at(0)->getSpeed());
+                int strength = roster->at(0)->getStrength();
+                int speed = roster->at(0)->getSpeed();
                 Player *player = new Player(name, strength, speed);
                 teamB->insertTail(player);
                 roster->removeHead();
@@ -367,7 +369,55 @@ The function should then display something like the following:
 “Team B wins! Sora, Kairi, Namine, Olette, Ansem.”
 */
 void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defender){
-
+    cout << runner->getName() << endl << defender->getName() << endl;
+    if((teamA->valueIsInList((Player *) runner) && teamA->valueIsInList((Player*) defender)) || (teamB->valueIsInList((Player*) runner) && teamB->valueIsInList((Player *) defender))){
+        return;
+    } else {
+        int location = -1;
+        int team = -1;
+        for(int i=0; i<getTeamASize(); i++){
+            if(teamA->at(i) == defender){
+                location = i;
+                team = 1;
+                break;
+            }
+        }
+        if(location = -1 || team == -1){
+            for(int i=0; i<getTeamASize(); i++){
+                if(teamB->at(i) == defender){
+                    location = i;
+                    team = 2;
+                    break;
+                }
+            }
+        }
+        /*
+        if(location = -1 || team == -1){
+            return;
+        }
+         */
+        int runnerTotal = runner->getSpeed() + runner->getStrength();
+        int defenderTotal = 0;
+        int defenderStrength = 0;
+        int defenderNextStrength = 0;
+        if(team == 1){
+            defenderStrength = defender->getStrength();
+            defenderNextStrength = teamA->at(location+1)->getStrength();
+            defenderTotal = defenderStrength + defenderNextStrength;
+            cout << defenderStrength << endl;
+            cout << defenderNextStrength << endl;
+            cout << teamA->at(location+1)->getName();
+            cout << defenderTotal << endl;
+        } else {
+            defenderStrength = defender->getStrength();
+            defenderNextStrength = teamB->at(location+1)->getStrength();
+            defenderTotal = defenderStrength + defenderNextStrength;
+            cout << defenderStrength << endl;
+            cout << defenderNextStrength << endl;
+            cout << teamB->at(location+1)->getName() << endl;
+            cout << defenderTotal << endl;
+        }
+    }
 }
 
 /*

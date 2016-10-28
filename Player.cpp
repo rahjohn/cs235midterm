@@ -5,13 +5,10 @@
 #include "doubleLinkedList.h"
 #include <sstream>
 
-Player::Player(string name, string strength, string speed){
+Player::Player(string name, int strength, int speed){
     this->name = name;
-    stringstream ss;
-    ss << speed;
-    ss >> this->speed;
-    ss << strength;
-    ss >> this->strength;
+    this->strength = strength;
+    this->speed = speed;
 }
 Player::~Player(){}
 

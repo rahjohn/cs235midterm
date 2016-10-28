@@ -8,7 +8,7 @@
 
 class Player : public PlayerInterface {
 public:
-    Player(string name, string strength, string speed);
+    Player(string name, int strength, int speed);
     virtual ~Player();
     virtual string getName();
     virtual int getStrength();
