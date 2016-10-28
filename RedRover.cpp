@@ -36,9 +36,28 @@ RedRover::~RedRover(){
 * You may assume that the format of the string and the name, strength, and speed of each player will be valid.
 *
 * Returns true if players were added to the roster, false otherwise
+ * This function will accept a string containing the names, strengths, and speeds of player who will
+be participating in the game. You may create your own string for testing purposes, but the TAs will use
+specific lists of players when grading your program. The string will contain a list of Players to be put on
+the roster. The format of the string will look something like this, with one token on each line:
+Jordan
+25
+12
+MichaelP
+15
+20
+…
+The first integer following a Player's name is that Player's strength. The second integer is that
+Player's speed. Using the information for each Player, create a new node and add it to the end of your
+roster. If there is a previously existing roster, add the new Players to the end of the roster. You may
+assume that the string format will be correct. You may NOT assume that a string will contain an even
+number of players or that the string will not be empty. If an empty string is given, advise the user that
+no players have been added to the roster. If the string contains information for one player, you should
+add that player onto the end of the current roster. You may allow multiple players with the same name
+to be placed in the roster.
 */
 bool RedRover::addToRoster(string player_list) {
-    player_list = "sam 0 0\n rachel 0 0\n jacob 0 0\n tyler 0 0"; //for testing, delete when done
+    //player_list = "sam 0 0 rachel 0 0 jacob 0 0 tyler 0 0 bryce 0 0 "; //for testing, delete when done
     bool added = true;
     string name, strength, speed;
     stringstream ss(player_list);
@@ -50,6 +69,8 @@ bool RedRover::addToRoster(string player_list) {
             c++;
         }
     }
+    c -= 1;
+    cout << c << endl;
     if(c%3 ==0) {
         while (ss >> name && ss >> strength && ss >> speed) {
             if (ss.fail()) {
@@ -106,7 +127,6 @@ int RedRover::getTeamBSize() {
 */
 string RedRover::getRoster() {
     stringstream ss;
-    string name;
     int size = roster->size();
     if(size == 0) {
         return "Roster empty";
@@ -135,7 +155,6 @@ string RedRover::getRoster() {
 */
 string RedRover::getTeamA() {
     stringstream ss;
-    string name;
     int size = teamA->size();
     if(size == 0) {
         return "Team A empty";
@@ -164,7 +183,6 @@ string RedRover::getTeamA() {
 */
 string RedRover::getTeamB() {
     stringstream ss;
-    string name;
     int size = teamB->size();
     if(size == 0) {
         return "Team B empty";
@@ -264,12 +282,22 @@ void RedRover::shuffleRoster() {
 * (there must be at least 2 players on each team in order to play).
 *
 * returns true if Team A and Team B are created successfully, false otherwise
+ * This function will divide the Players in the roster into two teams. When adding to the teams, you
+must insert at the end of the team's list (i.e. with a new index that is greater than all the existing
+indices). Every other Player will be assigned to a different team; the first Player in the roster will be
+added to Team A, the second Player to Team B, etc. When a Player is added to a team, he is removed
+from the roster. If the roster has an odd number of Players, omit the last Player (the last Player will
+remain on the roster). If the roster has less than 4 Players, do not remove any players from the roster
+and alert the user that no players have been added to the teams.
 */
 bool RedRover::createTeams() {
     if(roster->size() < 4) {
         return false;
     } else {
         int size = roster->size();
+        if(size&2 != 0){
+            size -= 1;
+        }
         for(int i=0; i<size; i++){
             if(i == 0 || i%2 == 0) {
                 string name = roster->at(0)->getName();
@@ -308,8 +336,39 @@ bool RedRover::createTeams() {
 *
 * If the runner and the defender are on the same team or if one of the players cannot be located, does nothing
 * If either the runner or the defender is NULL, does nothing
+ * This function will operate as follows:
+1. The first player (the runner) will be located in either Team A or Team B, and the second player (the
+defender) will be located in the other team.
+2. The runner will attempt to break through the link held by the defender and his successor. The link
+that the runner attempts to break will always be between the defender and the next player in the list
+unless the defender is the last player in the list, at which point the runner will attempt to break the link
+between the last two players. For example,
+Team A: Kathryn, Adam, MichaelP, Timnah, Derek, Jonathan, Finn, Dallen
+Runner: Jonathan
+Team B: Jordan, MichaelD, Nick, Jason, Ryan, Jacob, Maxwell, Garrett
+Defender: Maxwell
+In this example, Jonathan will attempt to break the link between Maxwell and Garrett. The link will be
+broken if the sum of Jonathan’s strength and speed exceeds the sum of Maxwell and Garrett's strength.
+If the link is broken, then Jonathan returns to his original index on his team and the stronger Player
+associated with the link that was broken becomes a part of Jonathan’s team and is inserted after
+Jonathan. If the link is not broken then Jonathan will become part of Team B and will be inserted after
+Maxwell, between Maxwell and Garrett.
+If the attack results in either team winning, then a message should be displayed showing the
+members of the winning team and alerting the user that the team has won and the game is over. For
+example, if the teams were as follows:
+Team A: Riku, Ansem
+Team B: Sora, Kairi, Namine, Olette
+If Olette is called over to Team A and breaks through the link, then the stronger of the two
+players forming the link in Team A would be added to Team B. If Ansem had a higher strength than Riku
+the teams would look like this after the attack was over:
+Team A: Riku
+Team B: Sora, Kairi, Namine, Olette, Ansem
+The function should then display something like the following:
+“Team B wins! Sora, Kairi, Namine, Olette, Ansem.”
 */
-void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defender){}
+void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defender){
+
+}
 
 /*
 * teamReset()
