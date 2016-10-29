@@ -396,7 +396,11 @@ The function should then display something like the following:
 “Team B wins! Sora, Kairi, Namine, Olette, Ansem.”
 */
 bool RedRover::sameTeam(PlayerInterface *person1, PlayerInterface *person2){
-    return getTeam(person1)->valueIsInList(person1) == getTeam(person2)->valueIsInList(person2);
+    if(getTeam(person1) == getTeam(person2)){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 doubleLinkedList<PlayerInterface*> * RedRover::getTeam(PlayerInterface *person){
@@ -441,23 +445,28 @@ PlayerInterface* RedRover::strongestPlayer(PlayerInterface *defender){
     }
 }
 void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defender) {
+    //runner = teamA->at(2);
+    //defender = teamB->at(0);
+    doubleLinkedList<PlayerInterface *> *defenderTeam = getTeam(defender);
+    doubleLinkedList<PlayerInterface *> *runnerTeam = getTeam(runner);
+    PlayerInterface *strongestplayer = strongestPlayer(defender);
     if(sameTeam(runner, defender)) return;
     int link = linkStrength(defender);
     int runnerTotal = runner->getStrength() + runner->getSpeed();
     if(runnerTotal > link){
-        string name = getTeam(defender)->at(playerIndex(strongestPlayer(defender)))->getName();
-        int strength = getTeam(defender)->at(playerIndex(strongestPlayer(defender)))->getStrength();
-        int speed = getTeam(defender)->at(playerIndex(strongestPlayer(defender)))->getSpeed();
+        string name = defenderTeam->at(playerIndex(strongestplayer))->getName();
+        int strength = defenderTeam->at(playerIndex(strongestplayer))->getStrength();
+        int speed = defenderTeam->at(playerIndex(strongestplayer))->getSpeed();
         Player *player = new Player(name, strength, speed);
-        getTeam(runner)->insertAfter(runner, player);
-        getTeam(defender)->remove(strongestPlayer(defender));
+        runnerTeam->insertAfter(player, runner);
+        defenderTeam->remove((Player *) strongestplayer);
     } else {
         string name = runner->getName();
         int strength = runner->getStrength();
         int speed = runner->getSpeed();
         Player *player = new Player(name, strength, speed);
-        getTeam(defender)->insertAfter(defender, player);
-        getTeam(runner)->remove(runner);
+        defenderTeam->insertAfter(player, defender);
+        runnerTeam->remove((Player *) runner);
     }
         /*
         int strength = teamA->at(location - 1)->getStrength();
