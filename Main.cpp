@@ -28,8 +28,10 @@ void inputPlayers(RedRover * redRover){
         cout << redRover->getRoster() << endl;
         cout << redRover->getTeamA() << endl;
         cout << redRover->getTeamB() << endl;
-        //redRover->sendSomeoneOver(redRover->teamBAt(0), redRover->teamBAt(0));
-        redRover->autoPlay();
+        redRover->sendSomeoneOver(redRover->teamBAt(0), redRover->teamBAt(0));
+        cout << redRover->getTeamA() << endl;
+        cout << redRover->getTeamB() << endl;
+        //redRover->autoPlay();
     } else {
         cout << "something didn't work" << endl;
     }

@@ -395,30 +395,80 @@ Team B: Sora, Kairi, Namine, Olette, Ansem
 The function should then display something like the following:
 “Team B wins! Sora, Kairi, Namine, Olette, Ansem.”
 */
-void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defender) {
-    if ((teamA->valueIsInList((Player *) runner) && teamA->valueIsInList((Player *) defender)) ||
-        (teamB->valueIsInList((Player *) runner) &&
-         teamB->valueIsInList((Player *) defender))) { //if the runner and defender are on the same team
-        return;
+bool RedRover::sameTeam(PlayerInterface *person1, PlayerInterface *person2){
+    return getTeam(person1)->valueIsInList(person1) == getTeam(person2)->valueIsInList(person2);
+}
+
+doubleLinkedList<PlayerInterface*> * RedRover::getTeam(PlayerInterface *person){
+    for (int i = 0; i < getTeamASize(); i++) { //look through teamA
+        if (teamA->at(i) == person) { //if the defender is on teamA then set its location
+            return (doubleLinkedList<PlayerInterface *> *) teamA;
+        }
+    }
+    for (int i = 0; i < getTeamASize(); i++) { //if the defender is on teamB then set its location
+        if (teamB->at(i) == person) {
+            return (doubleLinkedList<PlayerInterface *> *) teamB;
+        }
+    }
+    return NULL;
+}
+
+int RedRover::playerIndex(PlayerInterface *person){
+    for(int i=0; i<getTeam(person)->size(); i++){
+        if(getTeam(person)->at(i) == person){
+            return i;
+        }
+    }
+}
+
+PlayerInterface *RedRover::nextToDefender(PlayerInterface *defender){
+    int location = playerIndex(defender);
+    if(location == getTeam(defender)->size()-1){
+        return getTeam(defender)->at(location-1);
     } else {
-        int location = -1;
-        int team = -1;
-        for (int i = 0; i < getTeamASize(); i++) { //look through teamA
-            if (teamA->at(i) == defender) { //if the defender is on teamA then set its location
-                location = i;
-                team = 1;
-                break;
-            }
-        }
-        if (location == -1 || team == -1) { //if the defender is not on teamA then look through teamB
-            for (int i = 0; i < getTeamASize(); i++) { //if the defender is on teamB then set its location
-                if (teamB->at(i) == defender) {
-                    location = i;
-                    team = 2;
-                    break;
-                }
-            }
-        }
+        return getTeam(defender)->at(location+1);
+    }
+}
+int RedRover::linkStrength(PlayerInterface *defender){
+    return defender->getStrength() + nextToDefender(defender)->getStrength();
+}
+
+PlayerInterface* RedRover::strongestPlayer(PlayerInterface *defender){
+    if(defender->getStrength() >= nextToDefender(defender)->getStrength()){
+        return defender;
+    } else {
+        return nextToDefender(defender);
+    }
+}
+void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defender) {
+    if(sameTeam(runner, defender)) return;
+    int link = linkStrength(defender);
+    int runnerTotal = runner->getStrength() + runner->getSpeed();
+    if(runnerTotal > link){
+        string name = getTeam(defender)->at(playerIndex(strongestPlayer(defender)))->getName();
+        int strength = getTeam(defender)->at(playerIndex(strongestPlayer(defender)))->getStrength();
+        int speed = getTeam(defender)->at(playerIndex(strongestPlayer(defender)))->getSpeed();
+        Player *player = new Player(name, strength, speed);
+        getTeam(runner)->insertAfter(runner, player);
+        getTeam(defender)->remove(strongestPlayer(defender));
+    } else {
+        string name = runner->getName();
+        int strength = runner->getStrength();
+        int speed = runner->getSpeed();
+        Player *player = new Player(name, strength, speed);
+        getTeam(defender)->insertAfter(defender, player);
+        getTeam(runner)->remove(runner);
+    }
+        /*
+        int strength = teamA->at(location - 1)->getStrength();
+        int speed = teamA->at(location - 1)->getSpeed();
+        Player *player = new Player(name, strength, speed); //copy the second defender
+        teamB->insertAfter(player,
+                           (Player *) runner); //insert second defender after the runner's original position in teamB
+        teamA->remove(teamA->at(location)); //remove the second defender from teamA
+         */
+    /*
+    } else {
         int runnerTotal = runner->getSpeed() + runner->getStrength(); //total of runners speed and strength
         int defenderTotal = 0;
         int defenderStrength = 0;
@@ -431,13 +481,6 @@ void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defende
                 if (runnerTotal > defenderTotal) { //if the runner breaks through
                     if (defenderStrength <
                         defenderNextStrength) { //if the second defender is stronker than the original defender
-                        string name = teamA->at(location - 1)->getName();
-                        int strength = teamA->at(location - 1)->getStrength();
-                        int speed = teamA->at(location - 1)->getSpeed();
-                        Player *player = new Player(name, strength, speed); //copy the second defender
-                        teamB->insertAfter(player,
-                                           (Player *) runner); //insert second defender after the runner's original position in teamB
-                        teamA->remove(teamA->at(location)); //remove the second defender from teamA
                     } else { //if the original defender is stronker than the second defender
                         string name = teamA->at(location)->getName();
                         int strength = teamA->at(location)->getStrength();
@@ -553,6 +596,7 @@ void RedRover::sendSomeoneOver(PlayerInterface *runner, PlayerInterface *defende
             }
         }
     }
+     */
 }
 
 /*

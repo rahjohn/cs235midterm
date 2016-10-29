@@ -32,6 +32,12 @@ private:
     doubleLinkedList<Player*> * roster;
     doubleLinkedList<Player*> * teamA;
     doubleLinkedList<Player*> * teamB;
+    doubleLinkedList<PlayerInterface*> *getTeam(PlayerInterface *person);
+    virtual bool sameTeam(PlayerInterface *person1, PlayerInterface *person2);
+    virtual int linkStrength(PlayerInterface *defender);
+    virtual PlayerInterface *nextToDefender(PlayerInterface *defender);
+    virtual PlayerInterface *strongestPlayer(PlayerInterface *defender);
+    virtual int playerIndex(PlayerInterface *person);
 };
 
 #endif
