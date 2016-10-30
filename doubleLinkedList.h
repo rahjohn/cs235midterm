@@ -166,7 +166,7 @@ public:
             if (curr == tail) { //if the one we want to delete is tail
                 removeTail();
             } else { //if the one we want to delete is in the middle somewhere
-                temp -> next = curr -> next;
+                temp -> next = a;
                 a->prev = temp;
                 delete curr;
             }
